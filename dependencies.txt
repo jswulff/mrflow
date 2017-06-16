@@ -1,0 +1,70 @@
+EXTERNAL:
+- Numpy
+- OpenCV
+- Matplotlib
+- Scipy
+- Chumpy 
+- Cython (for building TRWS extension)
+
+
+INTERNAL:
+[X] mrflow.py
+[X] mrflow_dataset.py
+[X] load_data[.load_initial_data]
+[X] dataset_parameters
+[] parameters
+
+
+[x] utils.check_homography
+[X] utils.compute_figure[*]
+[x] utils.edge_weights
+[X] utils.flow_io[*]
+[X] utils.flow_viz[*]
+[x] utils.flow_homography
+[X] utils.imgutils
+[x] utils.matrix_from_filter
+[x] utils.normalized_transforms
+[x] utils.plot_debug
+[X] utils.print_exception[.print_exception]
+[x] utils.robust_functions
+[x] utils.spyder_debug
+[X] utils.structure2image[.structure2image]
+
+[x] features.features_from_flow
+[x] features.features_from_klt
+
+[x] robust_fitting.ransac
+[x] robust_fitting.lmeds
+
+[x] structure_refinement.optimize_structure_multi_scale[.optimizeStructureMultiScale]
+[x] structure_refinement.optimize_structure_single_scale
+[x] structure_refinement.construct_matrices
+[x] structure_refinement.interpolate_through_H
+[x] structure_refinement.interpolation
+
+
+[x] rigidity.occlusions[.computeOcclusionsFromConsistency]
+[x] rigidity.inference
+
+[x] initialization.homographies
+[x] initialization.refine_A
+
+[x] extern/eff_trws
+
+
+
+[x]pipeline.match_features
+   - generate_features
+[x]pipeline.initial_alignment
+   - align_frames
+[x]pipeline.compute_structure
+   - compute_structure
+[x]pipeline.optimize_variational_refinement
+   - optimize
+[x]pipeline.structure2flow
+   - combine_flow
+[x]pipeline.evaluate_flow
+   - compute_errors
+   - save_frames
+   
+
