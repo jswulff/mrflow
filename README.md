@@ -63,13 +63,9 @@ Some important flags are
 * `--flow_bwd FLOW_BWD` : Initial flow from IMAGE2 to IMAGE1.
 * `--backflow_fwd BFLOW_FWD` : Initial flow from IMAGE3 to IMAGE2.
 * `--backflow_bwd BFLOW_BWD` : Initial flow from IMAGE1 to IMAGE2.
-* `--no_init`  : Omit the initializations that are not given. Instead, use DiscreteFlow to compute the initial optical flow maps, and use a uniform prior for the rigidity estimate. If both `--no_init` is given and some initialization is provided (e.g. by calling `python mrflow.py --no_init --rigidity RIGIDITMAP.png ...`), the initialization that is given is still used. **IF YOU OMIT THE INITIALIZATION, DO NOT EXPECT COMPARABLE PERFORMANCE TO THE PAPER.**
+* `--no_init`  : Omit the initializations that are not given. Instead, use DiscreteFlow to compute the initial optical flow maps, and use a uniform prior for the rigidity estimate. **If you omit the initialization, do not expect comparable performance to the paper.** If both `--no_init` is given and some initialization is provided (e.g. by calling `python mrflow.py --no_init --rigidity RIGIDITMAP.png ...`), the initialization that is given is still used. 
 * `--tempdir TDIR` : Alternative output directory 
 * `--override_optimization 1` : Do not perform variational structure refinement. Often this gives sufficient accuracy, at a much lower computational cost.
-
-
-If you want to run MR-Flow without initialization, 
-
 
 
 For further flags and parameters, please see the file `parameter.py`.
