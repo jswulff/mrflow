@@ -330,6 +330,9 @@ def main():
     parser.add_argument('--flow_bwd', type=str, default='', help='Initial flow in backward direction (T to T-1)')
     parser.add_argument('--backflow_bwd', type=str, default='', help='Initial backflow in backward direction (T-1 to T)')
 
+    # Override initialization arguments
+    parser.add_argument('--no_init', action='store_true', help='Do not provide initial rigidity and flow. Instead, the rigidity is set to constant, and the flow is computed using DiscreteFlow. Warning: This will severely impact performance!')
+
     # GT data, if an evaluation is desired
     parser.add_argument('--flow_fwd_gt', type=str, default='', help='GT flow in forward direction (used only for evaluation)')
     parser.add_argument('--rigidity_gt', type=str, default='', help='GT rigidity (used only for evaluation)')

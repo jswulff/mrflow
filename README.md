@@ -5,6 +5,8 @@ This software package contains the MR-Flow optical flow algorithm, as described 
 
 MR-Flow splits the scene into moving objects and the static scene, uses general optical flow for the moving parts, and strong geometric constraints in the static scene.
 
+Note that due to some small bugfixes and changes in the codebase, the results can differ slightly from those given in the paper.
+
 We hope this software is useful to you.
 If you have any questions, comments, or issues, please do not hesitate to [contact us](mailto:jonas.wulff@tuebingen.mpg.de).
 
@@ -34,29 +36,41 @@ To compile the Cython extension, simply run `build_trws.sh` in the main director
 
 After that, you can test MR-Flow as
 
-    python mrflow.py example/frame1.png example/frame2.png example/frame3.png
+    python mrflow.py --no_init example/frame1.png example/frame2.png example/frame3.png
 
 
 
 Usage
 --------
 
-The simplest use case is to call MR-Flow as
+The recommended way to call MR-Flow as
 
-    python mrflow.py IMAGE1 IMAGE2 IMAGE3
+    python mrflow.py \
+      --rigidity RIGIDITYMAP.png \
+      --flow_fwd FLOW_FWD.flo \
+      --flow_bwd FLOW_BWD.flo \
+      --backflow_fwd BACKFLOW_FWD.flo \
+      --backflow_bwd BACKFLOW_BWD.flo \
+      IMAGE1 IMAGE2 IMAGE3
     
 This will compute the optical flow from IMAGE2 to IMAGE3.
 MR-Flow will save the resulting optical flow, the structure, and some visualizations to the current directory.
 
 Some important flags are
 
-* `-rigidity RIGIDITYMAP` : Use pre-computed rigidity, for example given by a semantic segmentation CNN. RIGIDITYMAP has to be a monochrome PNG, where black denotes a moving object and white denotes the static scene. Note that the rigiditymap does not have to be binary; values between 0 and 1 are interpreted as probabilties for a pixel to be part of the static scene.
-* `-flow_fwd FLOW_FWD` : Initial flow from IMAGE2 to IMAGE3. Note that if not all initial flow fields are given, the initial flow is computed using DiscreteFlow.
-* `-flow_bwd FLOW_BWD` : Initial flow from IMAGE2 to IMAGE1.
-* `-backflow_fwd BFLOW_FWD` : Initial flow from IMAGE3 to IMAGE2.
-* `-backflow_bwd BFLOW_BWD` : Initial flow from IMAGE1 to IMAGE2.
-* `-tempdir TDIR` : Alternative output directory 
-* `-override_optimization 1` : Do not perform variational structure refinement. Often this gives sufficient accuracy, at a much lower computational cost.
+* `--rigidity RIGIDITYMAP` : Use pre-computed rigidity, for example given by a semantic segmentation CNN. RIGIDITYMAP has to be a monochrome PNG, where black denotes a moving object and white denotes the static scene. Note that the rigiditymap does not have to be binary; values between 0 and 1 are interpreted as probabilties for a pixel to be part of the static scene.
+* `--flow_fwd FLOW_FWD` : Initial flow from IMAGE2 to IMAGE3. Note that if not all initial flow fields are given, the initial flow is computed using DiscreteFlow.
+* `--flow_bwd FLOW_BWD` : Initial flow from IMAGE2 to IMAGE1.
+* `--backflow_fwd BFLOW_FWD` : Initial flow from IMAGE3 to IMAGE2.
+* `--backflow_bwd BFLOW_BWD` : Initial flow from IMAGE1 to IMAGE2.
+* `--no_init`  : Omit the initializations that are not given. Instead, use DiscreteFlow to compute the initial optical flow maps, and use a uniform prior for the rigidity estimate. If both `--no_init` is given and some initialization is provided (e.g. by calling `python mrflow.py --no_init --rigidity RIGIDITMAP.png ...`), the initialization that is given is still used. **IF YOU OMIT THE INITIALIZATION, DO NOT EXPECT COMPARABLE PERFORMANCE TO THE PAPER.**
+* `--tempdir TDIR` : Alternative output directory 
+* `--override_optimization 1` : Do not perform variational structure refinement. Often this gives sufficient accuracy, at a much lower computational cost.
+
+
+If you want to run MR-Flow without initialization, 
+
+
 
 For further flags and parameters, please see the file `parameter.py`.
 

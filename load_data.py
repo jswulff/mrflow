@@ -74,7 +74,8 @@ def load_initial_data(
                 backflow_fwd = fio.flow_read(os.path.join(params.tempdir,'init_backflow_fwd.flo'))
                 backflow_bwd = fio.flow_read(os.path.join(params.tempdir,'init_backflow_bwd.flo'))
 
-            else:
+            elif params.no_init:
+                # No initialization was given, but the no_init flag is set.
                 EPIC=False
                 print('Computing flow fields... ')
                 if EPIC:
@@ -112,6 +113,20 @@ def load_initial_data(
                     backflow_fwd = [backflow_fwd[:,:,0],backflow_fwd[:,:,1]]
                     backflow_bwd = [backflow_bwd[:,:,0],backflow_bwd[:,:,1]]
 
+            else:
+                # Error : no_init flag is not set, but no initialization is given.
+                print('(EE)')
+                print('(EE) No initial flow given. Quitting.')
+                print('(EE) If you want to use DiscreteFlow to compute the initial flow, call MR-Flow with the flag --no_init.')
+                print('(EE) However, if you do, expect significantly worse performance compared to the paper.')
+                print('(EE)')
+                sys.exit(1)
+
+
+                print('(EE)')
+                print('(EE) ERROR: ')
+
+
 
         flow = [flow_bwd, flow_fwd]
 
@@ -135,9 +150,19 @@ def load_initial_data(
         # Rigidity
         if path_rigidity:
             rigidity = img_as_float(cv2.imread(path_rigidity))[:,:,0]
-        else:
+        elif params.no_init:
             # 0.6 is the general prior for rigidity
             rigidity = 0.6 * np.ones(images[1].shape[:2])
+        else:
+            # Error : no_init flag is not set, but no initialization is given.
+            print('(EE)')
+            print('(EE) No initial rigidity given. Quitting.')
+            print('(EE) If you want to use a uniform prior for the rigidity estimation, call MR-Flow with the flag --no_init.')
+            print('(EE) However, if you do, expect significantly worse performance compared to the paper.')
+            print('(EE)')
+            sys.exit(1)
+
+
 
         rigidity_thresholded = cv2.erode((rigidity>0.5).astype('uint8'), np.ones((3,3),np.uint8)) > 0
 
@@ -195,6 +220,9 @@ def load_initial_data(
             data_out['error_override'] = True
         else:
             data_out['error_override'] = False
+
+    except SystemExit as e:
+        sys.exit(e)
 
     except:
         print('(EE) Exception in load_data.py')
