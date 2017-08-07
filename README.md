@@ -71,6 +71,14 @@ Some important flags are
 For further flags and parameters, please see the file `parameter.py`.
 
 
+
+Rigidity maps
+-------------
+
+The CNNs to estimate the rigidity maps in the paper are available [here](http://files.is.tue.mpg.de/jwulff/mrflow/semantic_rigidity_cvpr2017.zip).
+
+
+
 Citation
 --------
 
