@@ -1,5 +1,5 @@
 all:
 	rm -f eff_trws.so
+	rm -f __init__.py
 	/usr/bin/env python2 setup.py build_ext --inplace
-	ln -sf `find . -name eff_trws.so` .
-	#ln -sf ${PWD}/eff_trws.so ..
+	touch __init__.py
