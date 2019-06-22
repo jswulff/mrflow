@@ -138,3 +138,23 @@ def flow_write_png(u,v,fpath,valid=None):
     with open(fpath,'wb') as fil:
         W.write(fil,I.reshape((-1,3*u.shape[1])))
  
+def disp_write_png(d, fpath):
+    """
+    Write KITTI disparity
+    """
+    
+    d = d.astype('float64')
+    
+    I = d*256
+    I[np.where(d==0)] = 1
+    I[np.where(I<0)] = 0
+    I[np.where(I>65535)] = 0
+    I = I.astype('uint16')
+
+    W = png.Writer(width=disp.shape[1],
+                   height=disp.shape[0],
+                   bitdepth=16, 
+                   planes=1)
+       
+    with open(fpath, 'wb') as disp_fil:
+        W.write(disp_fil, I.reshape((-1, disp.shape[1])))
